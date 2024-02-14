@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
+            background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/memphis-mini.png'); /* Texture background */
         }
         .navbar {
             background-color: #333;
@@ -32,11 +33,24 @@
         }
         .content {
             background-color: #ffffff;
+            background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/diagonal-striped-brick.png'); /* Adding texture to content background */
             padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Adding a subtle shadow for depth */
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
             margin-top: 20px;
         }
         h1, h2 {
             color: #333;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -53,7 +67,7 @@
     <div class="content">
         <h1>Welcome to My CS 184 Project</h1>
         <p>This webpage is designed to showcase my progress and completion of tasks for my class project.</p>
-        
+        <img src="https://via.placeholder.com/500" alt="Example Image">
         <h2 id="task1">Task 1</h2>
         <p>Here, I'll describe how I completed Task 1, including any challenges faced and how I overcame them.</p>
         
@@ -62,6 +76,10 @@
         
         <!-- Add more sections for each task with your content -->
     </div>
+</div>
+
+<div class="footer">
+    <p>Group Members: Alina Sheng and Xiaowen Liu</p>
 </div>
 
 </body>

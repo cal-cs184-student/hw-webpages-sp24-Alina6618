@@ -60,12 +60,20 @@
         display: inline;
         font-weight: bold;
         }
-        .responsive-image {
-        max-width: 300px; 
-        height: auto; 
-        display: block;
-        margin: 0 auto;
+        .image-container {
+            display: flex; /* Use flexbox */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh; /* Make the container take the full height of the viewport */
+            width: 100%; /* Ensure the container is full width */
         }
+        .responsive-image {
+            max-width: 100%; /* Make the image responsive */
+            max-height: 80vh; /* Limit the image's height to ensure it fits within the viewport */
+            height: auto; /* Maintain aspect ratio */
+        }
+</style>
+
     </style>
 </head>
 <body>
@@ -90,17 +98,28 @@
         <div class="question"><p>Explain how your algorithm is no worse than one that checks each sample within the bounding box of the triangle.</p></div>
         <p>Essentially, our method does precisely that—it checks each sample within the bounding box. So, it's on par with any algorithm that adopts this approach.</p>
         <div class="question"><p>Show a png screenshot of basic/test4.svg with the default viewing parameters and with the pixel inspector centered on an interesting part of the scene.</p></div>
-        <img src="images/task1.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
-
-
-<img src="path_to_your_screenshot.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+        <div class="image-container">
+            <img src="images/task1.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+        </div>
 
         
         <h2 id="task2">Task 2</h2>
         <div class="question"><p>Walk through your supersampling algorithm and data structures. Why is supersampling useful? What modifications did you make to the rasterization pipeline in the process? Explain how you used supersampling to antialias your triangles.</p></div>
-        <p></p>
-        <div class="question"><p>Show png screenshots of basic/test4.svg with the default viewing parameters and sample rates 1, 4, and 16 to compare them side-by-side. Position the pixel inspector over an area that showcases the effect dramatically; for example, a very skinny triangle corner. Explain why these results are observed.</p></div>
+        <p>Change in Data Structure: Expand the size of sample_buffer by multiplying it by the sample rate to store colour values for each sub-pixel. The indexing changes from sample_buffer [y * width + x] to sample_buffer[(((y * sqr_rate + dy) * width * sqr_rate) + x * sqr_rate + dx)], where sqr_rate = sqrt(sample_rate).</p>
+        <p>Algorithm: Taking the sample rate of 4 as an example, whenever rendering a triangle in rasterize_triangle(), I break each pixel within the bounding box into 4 smaller rectangles and pass each sub-part to the triangle test. The point for each sub-part is now (x + 1/(2*sqr_rate) + xd*1/sqr_rate, y + 1/(2*sqr_rate) + yd*1/sqr_rate), where xd and yd is the index of 4 sub-parts. If the point passes the triangle test, we index it into sample_buffer and store its corresponding colour.</p>
+        <p>In resolve_to_framebuffer(), we calculate the average colour value from all 4 subparts of each pixel and transfer the corresponding average colour to rgb_framebuffer_target.</p>
+        <p>Why helpful: It reduces sampling artifacts like jaggies and makes the line smooth by averaging multiple samples for each pixel and making diagonal lines and curves appear more natural and less pixelated.</p>
         
+        <div class="question"><p>Show png screenshots of basic/test4.svg with the default viewing parameters and sample rates 1, 4, and 16 to compare them side-by-side. Position the pixel inspector over an area that showcases the effect dramatically; for example, a very skinny triangle corner. Explain why these results are observed.</p></div>
+        <div class="image-comparison-container">
+            <img src="images/task2-1.png" alt="Sample Rate 1" class="responsive-image">
+            <img src="images/task2-2.png" alt="Sample Rate 4" class="responsive-image">
+            <img src="images/task2-3.png" alt="Sample Rate 16" class="responsive-image">
+        </div>
+        <p>Observation: From left to right: 1, 4, 16. It's evident that as we increase the sampling rate, the number of jaggies decreases, and the line appears smoother. This is because rather than simply categorizing each pixel as either "passing" or "failing" the line test, we now compute the average colour value of the samples within a pixel. This method introduces a more gradual transition in colour, resulting in enhanced smoothness and reduced sampling artifacts.</p>
+
+
+    
     </div>
 </div>
 

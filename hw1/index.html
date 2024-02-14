@@ -129,7 +129,7 @@
 
         <h2 id="task4">Task 4</h2>
         <div class="question"><p>Explain barycentric coordinates in your own words and use an image to aid you in your explanation. One idea is to use a svg file that plots a single triangle with one red, one green, and one blue vertex, which should produce a smoothly blended color triangle. Show a png screenshot of svg/basic/test7.svg with default viewing parameters and sample rate 1. If you make any additional images with color gradients, include them.</p></div>
-        <p>Barycentric coordinates linearly interpolate values at the vertices. For instance, any point inside the triangle (with vertices A, B, C) can be represented as P = alpha*A + beta*B + gamma*C, where alpha + beta + gamma = 1 and each is larger or equal to 0. Alpha, Beta, and Gamma each represent the weights exerted by each vertex on point P, or geometrically, the proportional distance to each vertex. If a point is closer to vertex A, it’s more influenced by vertex A. As observed, in the illustration above, points around the red vertex appear red, but the very centre, with equal weights from blue, red, and green, looks closer to black.</p>
+        <p>Barycentric coordinates linearly interpolate values at the vertices. For instance, any point inside the triangle (with vertices A, B, C) can be represented as P = alpha*A + beta*B + gamma*C, where alpha + beta + gamma = 1 and each is larger or equal to 0. Alpha, Beta, and Gamma each represent the weights exerted by each vertex on point P, or geometrically, the proportional distance to each vertex. If a point is closer to vertex A, it’s more influenced by vertex A. As observed, in the illustration below, points around the red vertex appear red, but the very centre, with equal weights from blue, red, and green, looks closer to black.</p>
         <div class="image-container">
             <img src="images/task4-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
             <img src="images/task4-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
@@ -153,13 +153,32 @@
             <img src="images/task5-3.png" alt="Bilinear Sampling at 1 Sample per Pixel" class="responsive-image">
             <img src="images/task5-4.png" alt="Nearest Sampling at 16 Samples per Pixel" class="responsive-image">
         </div>
-        <p>From top to bottom: Bilinear Sampling at 1 Sample per Pixel, Nearest Sampling at 1 Sample per Pixel, Bilinear Sampling at 16 Sample per Pixel, Nearest Sampling at 16 Samples per Pixel<\p>
+        <p>From top to bottom: Bilinear Sampling at 1 Sample per Pixel, Nearest Sampling at 1 Sample per Pixel, Bilinear Sampling at 16 Sample per Pixel, Nearest Sampling at 16 Samples per Pixel.<\p>
         <p>At a supersample rate of 1, bilinear sampling results in a smoother texture with fewer jaggies compared to nearest sampling. With a supersample rate of 16, bilinear sampling remains slightly smoother, though the difference narrows due to the antialiasing effects of supersampling itself. This demonstrates that the gap between the two methods is most pronounced at lower sampling rates, highlighting bilinear sampling's advantage in creating smoother textures with fewer artifacts.</p>
         
 
+        <h2 id="task6">Task 6</h2>
+        <div class="question"><p>Explain level sampling in your own words and describe how you implemented it for texture mapping. You can now adjust your sampling technique by selecting pixel sampling, level sampling, or the number of samples per pixel. Describe the tradeoffs between speed, memory usage, and antialiasing power between the three various techniques. Using a png file you find yourself, show us four versions of the image, using the combinations of L_ZERO and P_NEAREST, L_ZERO and P_LINEAR, L_NEAREST and P_NEAREST, as well as L_NEAREST and P_LINEAR. Note: Choose a png that showcases the different sampling effects well.</p></div>
+        <p>Level Sampling: Level sampling involves generating different resolutions of images and selecting the appropriate resolution level based on distance or need, such as using higher resolution for closer objects.</p>
+        
+        <p>Implementation: We map texture coordinates and calculate differences (du/dx, dv/dx) and (du/dy, dv/dy), then compute the level L based on these differences. Depending on the level sampling method (L_NEAREST or L_LINEAR), we select or interpolate between levels.</p>
+        
+        <p>Comparison:</p>
+        <ul>
+            <li>Speed: Pixel sampling is the fastest due to a single computation per pixel, followed by mipmapping, with multiple samples per pixel being the slowest due to increased computations.</li>
+            <li>Memory Usage: Pixel sampling requires the least memory, while mipmapping and multiple samples per pixel have higher memory requirements due to storing multiple resolutions or treating each pixel as several samples, respectively.</li>
+            <li>Antialiasing Power: Pixel sampling has the least antialiasing power; mipmapping improves smoothness by selecting resolutions for distances; multiple samples per pixel provides the best antialiasing by averaging colors/values within each pixel.</li>
+        </ul>
+        
+        <div class="image-comparison-container">
+            <img src="images/task6-1.png" alt="L_ZERO and P_NEAREST" class="responsive-image">
+            <img src="images/task6-2.png" alt="L_ZERO and P_LINEAR" class="responsive-image">
+            <img src="images/task6-3.png" alt="L_NEAREST and P_NEAREST" class="responsive-image">
+            <img src="images/task6-4.png" alt="L_NEAREST and P_LINEAR" class="responsive-image">
+        </div>
+        <p>From top to bottom: L_ZERO & P_NEAREST, L_ZERO & P_LINEAR, L_NEAREST & P_NEAREST, L_NEAREST & P_LINEAR.</p>
+        <p>Observation: The center (whiter space) shows the most distinguishable differences. P_LINEAR generates smoother color transitions compared to P_NEAREST, and L_NEAREST offers smoother transitions over L_ZERO.</p>
 
-
-    
     </div>
 </div>
 

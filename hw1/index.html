@@ -55,11 +55,11 @@
         .question::before {
         content: "• ";
         font-weight: bold;
-    }
-    .question p {
+        }
+        .question p {
         display: inline;
         font-weight: bold;
-    }
+        }
     </style>
 </head>
 <body>
@@ -77,17 +77,19 @@
 <div class="container">
     <div class="content">
         <h1>Hi! Welcome to My CS 184 Project 1 :)</h1>
+        
         <h2 id="task1">Task 1</h2>
-        <div class="question"><p><strong>Walk through how you rasterize triangles in your own words.</strong></p>
+        <div class="question"><p>Walk through how you rasterize triangles in your own words.</p></div>
         <p>First, we find the maximum and minimum values of x and y to determine the bounding box of the triangle. Then, we iterate through every pixel within the bounding box and check if it's inside the triangle. Here we check for two cases: the triangle winding is counter-clockwise and the triangle winding is clockwise, since we’re unsure which case it belongs to. For both cases, we apply a point-in-triangle (or three-line test) to see if it’s in the triangle. If it passes the test in one of the cases, then the point must be inside the triangle and we rasterize the point. </p>
-        <div class="question"><p><strong>Explain how your algorithm is no worse than one that checks each sample within the bounding box of the triangle.</strong></p>
+        <div class="question"><p>Explain how your algorithm is no worse than one that checks each sample within the bounding box of the triangle.</p></div>
         <p>Essentially, our method does precisely that—it checks each sample within the bounding box. So, it's on par with any algorithm that adopts this approach.</p>
-        <div class="question"><p><strong>Show a png screenshot of basic/test4.svg with the default viewing parameters and with the pixel inspector centered on an interesting part of the scene.</strong></p>
-        <img src="images/task1.png" alt="Screenshot of basic/test4.svg" style="max-width:100%;height:auto;">
-
+        <div class="question"><p>Show a png screenshot of basic/test4.svg with the default viewing parameters and with the pixel inspector centered on an interesting part of the scene.</p></div>
+        <div class="image-container">
+            <img src="images/task1.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+        </div>
         
         <h2 id="task2">Task 2</h2>
-        <p>Here, I'll describe how I completed Task 2, including any challenges faced and how I overcame them.</p>
+        <div class="question"><p>Walk through how you rasterize triangles in your own words.</p></div>
         
         
     </div>

@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
-            background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/embossed-diamond.png'); /* Texture background */
+            background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/skyscraper.png');
         }
         .navbar {
             background-color: #333;
@@ -36,7 +36,7 @@
             background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/diagonal-striped-brick.png'); /* Adding texture to content background */
             padding: 20px;
             margin-top: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Adding a subtle shadow for depth */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .footer {
             text-align: center;
@@ -59,6 +59,12 @@
         .question p {
         display: inline;
         font-weight: bold;
+        }
+        .responsive-image {
+        max-width: 300px; 
+        height: auto; 
+        display: block;
+        margin: 0 auto;
         }
     </style>
 </head>
@@ -84,9 +90,11 @@
         <div class="question"><p>Explain how your algorithm is no worse than one that checks each sample within the bounding box of the triangle.</p></div>
         <p>Essentially, our method does precisely that—it checks each sample within the bounding box. So, it's on par with any algorithm that adopts this approach.</p>
         <div class="question"><p>Show a png screenshot of basic/test4.svg with the default viewing parameters and with the pixel inspector centered on an interesting part of the scene.</p></div>
-        <div class="image-container">
-            <img src="images/task1.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
-        </div>
+        <img src="images/task1.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+
+
+<img src="path_to_your_screenshot.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+
         
         <h2 id="task2">Task 2</h2>
         <div class="question"><p>Walk through your supersampling algorithm and data structures. Why is supersampling useful? What modifications did you make to the rasterization pipeline in the process? Explain how you used supersampling to antialias your triangles.</p></div>

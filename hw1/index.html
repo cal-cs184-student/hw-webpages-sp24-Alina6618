@@ -116,7 +116,47 @@
             <img src="images/task2-2.png" alt="Sample Rate 4" class="responsive-image">
             <img src="images/task2-3.png" alt="Sample Rate 16" class="responsive-image">
         </div>
-        <p>Observation: From left to right: 1, 4, 16. It's evident that as we increase the sampling rate, the number of jaggies decreases, and the line appears smoother. This is because rather than simply categorizing each pixel as either "passing" or "failing" the line test, we now compute the average colour value of the samples within a pixel. This method introduces a more gradual transition in colour, resulting in enhanced smoothness and reduced sampling artifacts.</p>
+        <p>Observation: From top to bottom: 1, 4, 16. It's evident that as we increase the sampling rate, the number of jaggies decreases, and the line appears smoother. This is because rather than simply categorizing each pixel as either "passing" or "failing" the line test, we now compute the average colour value of the samples within a pixel. This method introduces a more gradual transition in colour, resulting in enhanced smoothness and reduced sampling artifacts.</p>
+
+        
+        <h2 id="task3">Task 3</h2>
+        <div class="question"><p>Create an updated version of svg/transforms/robot.svg with cubeman doing something more interesting, like waving or running. Feel free to change his colors or proportions to suit your creativity. Save your svg file as my_robot.svg in your docs/ directory and show a png screenshot of your rendered drawing in your write-up. Explain what you were trying to do with cubeman in words.</p></div>
+        <p>The cubeman is shrugging and showing his hands because he’s confused (about CS 184, absolutely). I modified the arm blocks' orientation and added new blocks to represent hands and question marks to convey his puzzled state.</p>
+        <div class="image-container">
+            <img src="images/task3.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+        
+
+        <h2 id="task4">Task 4</h2>
+        <div class="question"><p>Explain barycentric coordinates in your own words and use an image to aid you in your explanation. One idea is to use a svg file that plots a single triangle with one red, one green, and one blue vertex, which should produce a smoothly blended color triangle. Show a png screenshot of svg/basic/test7.svg with default viewing parameters and sample rate 1. If you make any additional images with color gradients, include them.</p></div>
+        <p>Barycentric coordinates linearly interpolate values at the vertices. For instance, any point inside the triangle (with vertices A, B, C) can be represented as P = alpha*A + beta*B + gamma*C, where alpha + beta + gamma = 1 and each is larger or equal to 0. Alpha, Beta, and Gamma each represent the weights exerted by each vertex on point P, or geometrically, the proportional distance to each vertex. If a point is closer to vertex A, it’s more influenced by vertex A. As observed, in the illustration above, points around the red vertex appear red, but the very centre, with equal weights from blue, red, and green, looks closer to black.</p>
+        <div class="image-container">
+            <img src="images/task4-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+            <img src="images/task4-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+        
+
+        <h2 id="task5">Task 5</h2>
+        <div class="question"><p>Explain pixel sampling in your own words and describe how you implemented it to perform texture mapping. Briefly discuss the two different pixel sampling methods, nearest and bilinear. Check out the svg files in the svg/texmap/ directory. Use the pixel inspector to find a good example of where bilinear sampling clearly defeats nearest sampling. Show and compare four png screenshots using nearest sampling at 1 sample per pixel, nearest sampling at 16 samples per pixel, bilinear sampling at 1 sample per pixel, and bilinear sampling at 16 samples per pixel. Comment on the relative differences. Discuss when there will be a large difference between the two methods and why.</p></div>
+        <p>Pixel Sampling: Pixel sampling, a crucial technique in texture mapping, involves mapping each sample pixel from the texture (which may reside in a 3D space) to a specific screen location.</p>
+        
+        <p>Implementation: During the rasterization of a triangle, for each pixel that passes the line test, we find corresponding u, v by dot(barycentric, u) and dot(barycentric, v). Then we choose between two sampling techniques:</p>
+        <ul>
+            <li>Nearest sampling technique: We assign the value of the closest sample pixel. X = round(uv.x * (mip.width - 1)) Y = round(uv.y * (mip.height - 1)) And then I find mip.get_texel(x, y);</li>
+            <li>Bilinear sampling technique: We calculate and assign the value based on the average weight of the 4 nearest sample pixels. After getting x and y as in nearest sampling technique, instead of rounding, we find ceiling and floor of x and y to get the position of 4 nearest pixels. Then we calculate the difference between x (s) and y (s) Then we apply lerp function to find the final color as in the lecture.</li>
+        </ul>
+        
+        <p>Relative Difference:</p>
+        <div class="image-comparison-container">
+            <img src="images/task5-1.png" alt="Bilinear Sampling at 1 Sample per Pixel" class="responsive-image">
+            <img src="images/task5-2.png" alt="Nearest Sampling at 16 Samples per Pixel" class="responsive-image">
+            <img src="images/task5-3.png" alt="Bilinear Sampling at 1 Sample per Pixel" class="responsive-image">
+            <img src="images/task5-4.png" alt="Nearest Sampling at 16 Samples per Pixel" class="responsive-image">
+        </div>
+        <p>From top to bottom: Bilinear Sampling at 1 Sample per Pixel, Nearest Sampling at 1 Sample per Pixel, Bilinear Sampling at 16 Sample per Pixel, Nearest Sampling at 16 Samples per Pixel<\p>
+        <p>At a supersample rate of 1, bilinear sampling results in a smoother texture with fewer jaggies compared to nearest sampling. With a supersample rate of 16, bilinear sampling remains slightly smoother, though the difference narrows due to the antialiasing effects of supersampling itself. This demonstrates that the gap between the two methods is most pronounced at lower sampling rates, highlighting bilinear sampling's advantage in creating smoother textures with fewer artifacts.</p>
+        
+
 
 
     

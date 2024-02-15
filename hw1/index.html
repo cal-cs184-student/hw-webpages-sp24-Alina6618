@@ -91,8 +91,8 @@
 <div class="container">
     <div class="content">
         <h1>Hi! Welcome to Our CS 184 Homework 1 :)</h1>
-        <p>link to the webpage: https://cal-cs184-student.github.io/hw-webpages-sp24-Alina6618/hw1/</p>
-        <p>link to all the images: https://github.com/cal-cs184-student/hw-webpages-sp24-Alina6618/tree/master/hw1/images</p>
+        <p>Link to this webpage: https://cal-cs184-student.github.io/hw-webpages-sp24-Alina6618/hw1/</p>
+        <p>Link to all the images on this webpage: https://github.com/cal-cs184-student/hw-webpages-sp24-Alina6618/tree/master/hw1/images</p>
         
         <h2>Project Overview</h2>
         <p>In this homework, we embarked on an explorative journey into the fundamentals of graphics rendering, focusing on the intricacies of rasterization, texture mapping, and sampling techniques. The project was segmented into several key tasks, each designed to deepen our understanding of graphics rendering processes and to challenge our ability to apply theoretical concepts in practical scenarios.</p>
@@ -135,7 +135,7 @@
             <img src="images/task2-2.png" alt="Sample Rate 4" class="responsive-image">
             <img src="images/task2-3.png" alt="Sample Rate 16" class="responsive-image">
         </div>
-        <p>Observation: From top to bottom: 1, 4, 16. It's evident that as we increase the sampling rate, the number of jaggies decreases, and the line appears smoother. This is because rather than simply categorizing each pixel as either "passing" or "failing" the line test, we now compute the average colour value of the samples within a pixel. This method introduces a more gradual transition in colour, resulting in enhanced smoothness and reduced sampling artifacts.</p>
+        <p>Observation: From top to bottom: sample rate 1, 4, 16. It's evident that as we increase the sampling rate, the number of jaggies decreases, and the line appears smoother. This is because rather than simply categorizing each pixel as either "passing" or "failing" the line test, we now compute the average colour value of the samples within a pixel. This method introduces a more gradual transition in colour, resulting in enhanced smoothness and reduced sampling artifacts.</p>
 
         
         <h2 id="task3">Task 3</h2>
@@ -172,7 +172,7 @@
             <img src="images/task5-3.png" alt="Bilinear Sampling at 1 Sample per Pixel" class="responsive-image">
             <img src="images/task5-4.png" alt="Nearest Sampling at 16 Samples per Pixel" class="responsive-image">
         </div>
-        <p>From top to bottom: Bilinear Sampling at 1 Sample per Pixel, Nearest Sampling at 1 Sample per Pixel, Bilinear Sampling at 16 Sample per Pixel, Nearest Sampling at 16 Samples per Pixel.<\p>
+        <p>From top to bottom: Bilinear Sampling at 1 Sample per Pixel, Nearest Sampling at 1 Sample per Pixel, Bilinear Sampling at 16 Sample per Pixel, Nearest Sampling at 16 Samples per Pixel.</p>
         <p>At a supersample rate of 1, bilinear sampling results in a smoother texture with fewer jaggies compared to nearest sampling. With a supersample rate of 16, bilinear sampling remains slightly smoother, though the difference narrows due to the antialiasing effects of supersampling itself. This demonstrates that the gap between the two methods is most pronounced at lower sampling rates, highlighting bilinear sampling's advantage in creating smoother textures with fewer artifacts.</p>
         
 

@@ -155,7 +155,7 @@
 	    <li><strong>Debugging Tricks:</strong> To ensure accuracy during implementation, I created detailed diagrams representing the states of the mesh before and after the flip operation, focusing on e0 as the central edge. Each diagram included comprehensive labelling of edges, half edges, and vertices. In the code, I then explicitly set the next, twin, vertex, and other relevant properties for every half edge/edge/vertex/face involved in the flip. This approach, although resulting in some redundancy, served as a verification method, allowing me to cross-reference the code with the diagrams and confirm that every half edge was correctly updated.</li>
 	</ul>
 	<div class="question"><p>Show screenshots of a mesh before and after some edge flips.</p>
-	<div class="image-container">
+	<div class="image-comparison-container">
             <img src="images/task4-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
@@ -171,12 +171,12 @@
             <img src="images/task5-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
 	<div class="question"><p>Show screenshots of a mesh before and after some edge splits.</p>
-	<div class="image-container">
+	<div class="image-comparison-container">
             <img src="images/task5-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task5-3.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
 	<div class="question"><p>Show screenshots of a mesh before and after a combination of both edge splits and edge flips.</p>
-	<div class="image-container">
+	<div class="image-comparison-container">
             <img src="images/task5-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task5-4.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
@@ -193,19 +193,19 @@
         </div>
 
 	<div class="question"><p>Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges?</p>
-	<div class="image-container">
+	<div class="image-comparison-container">
 	    <img src="images/task6-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task6-3.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task6-4.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task6-5.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
-	<div class="image-container">
+	<div class="image-comparison-container">
 	    <img src="images/task6-6.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task6-7.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task6-8.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
 	<p>We could see that sharp corners become smoother after subdivisionHowever, if we pre-split some edges on places where we want to keep the sharpness, the smoothing effect will be reduced as follows:</p>
-	<div class="image-container">
+	<div class="image-comparison-container">
 	    <img src="images/task6-9.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task6-10.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task6-11.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
@@ -214,7 +214,7 @@
 	<ul>
             <li><strong>Pre-process:</strong>Originally, the mesh becomes asymmetrical due to each face having a unique arrangement of edges, either from left to right or from right to left. Consequently, certain corners accumulate more incoming edges. With additional subdivisions, some corners become increasingly divided.</li>
             <li><strong>Solution:</strong> To address this, I ensured every face is split into an X shape by dividing all edges on each face. This way, every face begins with an identical pattern of edges, leading to a naturally symmetrical outcome.</ul>
-	<div class="image-container">
+	<div class="image-comparison-container">
 	    <img src="images/task6-12.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task6-13.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task6-14.png" alt="Barycentric Coordinates Illustration" class="responsive-image">

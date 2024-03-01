@@ -90,26 +90,12 @@
 
 <div class="container">
     <div class="content">
-        <h1>Hi! Welcome to Our CS 184 Homework 1 :)</h1>
-        <p>Link to this webpage: https://cal-cs184-student.github.io/hw-webpages-sp24-Alina6618/hw1/</p>
-        <p>Link to all the images on this webpage: https://github.com/cal-cs184-student/hw-webpages-sp24-Alina6618/tree/master/hw1/images</p>
+        <h1>Hi! Welcome to Our CS 184 Homework 2 :)</h1>
+        <p>Link to this webpage: https://cal-cs184-student.github.io/hw-webpages-sp24-Alina6618/hw2/</p>
+        <p>Link to all the images on this webpage: https://github.com/cal-cs184-student/hw-webpages-sp24-Alina6618/tree/master/hw2/images</p>
         
         <h2>Project Overview</h2>
-        <p>In this homework, we embarked on an explorative journey into the fundamentals of graphics rendering, focusing on the intricacies of rasterization, texture mapping, and sampling techniques. The project was segmented into several key tasks, each designed to deepen our understanding of graphics rendering processes and to challenge our ability to apply theoretical concepts in practical scenarios.</p>
-
-        <h3>Key Implementations:</h3>
-        <ul>
-            <li><strong>Rasterization of Triangles:</strong> Developed an algorithm to rasterize triangles, identifying and filling pixels within the bounding box that fall inside the triangle. This foundational task enhanced our understanding of how shapes are rendered on a pixel grid.</li>
-            <li><strong>Supersampling for Antialiasing:</strong> Implemented supersampling to improve image quality by reducing aliasing effects. This technique, which involves rendering at a higher resolution and then downsampling, taught us the importance of sample rates in determining the balance between performance and visual fidelity.</li>
-            <li><strong>Barycentric Coordinates:</strong> Utilized barycentric coordinates for color interpolation within triangles. This method allowed for smooth color gradients and introduced us to the concept of using weighted averages for rendering.</li>
-            <li><strong>Texture Mapping and Sampling:</strong> Explored different pixel sampling methods—nearest and bilinear—to apply textures to shapes. This task demonstrated the impact of sampling techniques on texture quality and introduced us to texture mapping's complexities.</li>
-            <li><strong>Level of Detail (LOD) and Mipmapping:</strong> Implemented LOD and mipmapping to select appropriate texture resolutions based on distance. This optimization technique underscored the trade-offs between rendering speed, memory usage, and image quality.</li>
-        </ul>
-
-        <h3>Insights Gained:</h3>
-        <p>Completing this project has been an enlightening experience, offering us a practical perspective on the computational aspects of generating 2D representations of 3D scenes. The hands-on work with rasterization and texture mapping illuminated the challenges of rendering realistic images in real-time applications. One of the most interesting insights was the significant impact that antialiasing and sampling methods have on the final image quality. Moreover, the exploration of barycentric coordinates and their application in color interpolation and texture mapping was particularly fascinating, highlighting the mathematical beauty underlying computer graphics.</p>
-        <p>Furthermore, the project allowed us to appreciate the delicate balance between computational efficiency and visual quality, especially in the context of level sampling and mipmapping. It was intriguing to see firsthand how different sampling techniques can dramatically affect rendering outcomes and performance metrics.</p>
-
+        <p>In this CS184 assignment, I explored geometric modeling, starting with Bezier curves and surfaces using the de Casteljau algorithm, moving on to manipulate triangle meshes with the half-edge data structure, and culminating in implementing the Loop subdivision for mesh upsampling. Through these tasks, I gained a deep understanding of how shapes and surfaces are constructed and refined in computer graphics. The assignment was both challenging and enlightening, offering hands-on experience with complex geometric transformations and the efficient manipulation of meshes. Implementing the Loop subdivision, in particular, was a highlight, allowing me to see firsthand how coarse meshes could be transformed into smoother, more detailed versions. This project not only enhanced my technical skills but also deepened my appreciation for the intricate processes behind geometric modeling in computer graphics.</p>
         
         <h2 id="task1">Task 1</h2>
         <div class="question"><p>Briefly explain de Casteljau's algorithm and how you implemented it in order to evaluate Bezier curves.</p></div>
@@ -207,8 +193,34 @@
         </div>
 
 	<div class="question"><p>Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges?</p>
+	<div class="image-container">
+	    <img src="images/task6-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-3.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-4.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-5.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<div class="image-container">
+	    <img src="images/task6-6.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-7.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-8.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>We could see that sharp corners become smoother after subdivisionHowever, if we pre-split some edges on places where we want to keep the sharpness, the smoothing effect will be reduced as follows:</p>
+	<div class="image-container">
+	    <img src="images/task6-9.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-10.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-11.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
 	<div class="question"><p>Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects.</p>
-
+	<ul>
+            <li><strong>Pre-process:</strong>Originally, the mesh becomes asymmetrical due to each face having a unique arrangement of edges, either from left to right or from right to left. Consequently, certain corners accumulate more incoming edges. With additional subdivisions, some corners become increasingly divided.</li>
+            <li><strong>Solution:</strong> To address this, I ensured every face is split into an X shape by dividing all edges on each face. This way, every face begins with an identical pattern of edges, leading to a naturally symmetrical outcome.</ul>
+	<div class="image-container">
+	    <img src="images/task6-12.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-13.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-14.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-15.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+		
     </div>
 </div>
 

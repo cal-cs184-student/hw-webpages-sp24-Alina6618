@@ -128,7 +128,6 @@
         
         <h2 id="task2">Task 2</h2>
         <div class="question"><p>Briefly explain how de Casteljau algorithm extends to Bezier surfaces and how you implemented it in order to evaluate Bezier surfaces.</p></div>
-        <p><strong>De Casteljau’s algorithm extended to Bezier surface</strong></p>
         <ul>
             <li><strong>Basic idea:</strong> A Bezier surface typically consists of an NxN array of control points and is parameterised by two parameters (u, v) to generate a 2D surface. First, De Casteljau's algorithm is applied to each row of control points along the u-axis, producing one intermediate control point per row Once these N intermediate control points are obtained, the algorithm is then applied in a 1D manner along the v-axis to these N points, thereby evaluating the final point on the surface corresponding to the parameters u and v.</li>
 	    <li><strong>Implementation:</strong> In evaluate(), we take each vector in control points and evaluate1D(vec, u) along u-axis. Evaluate1D helps us to full evaluate de Casteljau's algorithm for a vector of points at scalar parameter t. With all these new final interpolated points, we apply evaluate1D over (final_vec, v) to evaluate the curve over v-axis.</li>

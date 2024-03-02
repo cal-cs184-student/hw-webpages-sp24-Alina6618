@@ -99,7 +99,6 @@
         <p> </p>
         <h2 id="task1">Task 1</h2>
         <div class="question"><p>Briefly explain de Casteljau's algorithm and how you implemented it in order to evaluate Bezier curves.</p></div>
-        <p><strong>De Casteljau’s algorithm</strong></p>
         <ul>
             <li><strong>Basic idea:</strong> For each Bezier curve with control point (P0, … , Pn), one can form a polygon by connecting these points consecutively (P0-P1, P1-P2…) For each segment Pi-Pi+1, based on certain parameter p, one could find a point P’i that divides the segment into p and 1-p portions. Now treating P’0, …, P’ n-1, as another set of Bezier curve control points, repeat the steps above until a single new point can be determined. This point corresponds to the parameter t. By varying t between 0 and 1, the final point traces out a smoother curve.</li>
 	    <li><strong>Implementation:</strong> When given a vector of point, compute points[i] * (1-t) + points[i + 1] * t for i in the range of the size of points. Return a vector of newly computed values. This vector contains all new control points (intermediate or final interpolated). Recursively call on this function until there’s a single point.</li>

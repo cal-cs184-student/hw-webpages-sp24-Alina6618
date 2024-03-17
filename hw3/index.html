@@ -80,12 +80,11 @@
 
 <div class="navbar">
     <a href="#home">Home</a>
-    <a href="#task1">Task 1</a>
-    <a href="#task2">Task 2</a>
-    <a href="#task3">Task 3</a>
-    <a href="#task4">Task 4</a>
-    <a href="#task5">Task 5</a>
-    <a href="#task6">Task 6</a>
+    <a href="#task1">Part 1</a>
+    <a href="#task2">Part 2</a>
+    <a href="#task3">Part 3</a>
+    <a href="#task4">Part 4</a>
+    <a href="#task5">Part 5</a>
 </div>
 
 <div class="container">
@@ -98,7 +97,7 @@
         <p>In this CS184 assignment, we explored geometric modeling, starting with Bezier curves and surfaces using the de Casteljau algorithm, moving on to manipulate triangle meshes with the half-edge data structure, and finally implemented the Loop subdivision for mesh upsampling. Through these tasks, we gained a deep understanding of how shapes and surfaces are constructed and refined in computer graphics. The assignment was both challenging and enlightening, offering hands-on experience with complex geometric transformations and the efficient manipulation of meshes. Implementing the Loop subdivision, in particular, was a highlight, allowing us to see firsthand how coarse meshes could be transformed into smoother, more detailed versions.</p>
         <p> </p>
 	    
-        <h2 id="task1">Task 1</h2>
+        <h2 id="task1">Part 1</h2>
         <div class="question"><p>Walk through the ray generation and primitive intersection parts of the rendering pipeline.</p></div>
 	<p>Ray generation happens in two key parts of our code: the `Camera::generate_ray` method and the `PathTracer::raytrace_pixel` method.</p>
         <ul>
@@ -132,7 +131,7 @@
 	<p>Top: Empty; Bottom: Spheres.</p>
 
         
-        <h2 id="task2">Task 2</h2>
+        <h2 id="task2">Part 2</h2>
         <div class="question"><p>Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.</p></div>
 	<p>Construction Algorithm:</p>
 	<ul>
@@ -166,7 +165,7 @@
 	<p>Top to Bomttom: Cow, Peter, Teapot without BVH.</p>
 
 	    
-        <h2 id="task3">Task 3</h2>
+        <h2 id="task3">Part 3</h2>
         <div class="question"><p>Walk through both implementations of the direct lighting function.</p></div>
 	<p>In estimate_direct_lighting_hemisphere, we iterate through each sample point, applying a transformation to it. We then generate a new shadow ray shadowRay(hit_p + wi_world * EPS_D, wi_world, INF_D). If the shadow ray does not intersect with any geometry, we find the emission and scale it by isect.bsdf->f(w_out, wi_local) * emission * cosTheta * 2 * PI. Finally, we average the scaled emissions from all rays.</p>
         <p>In estimate_direct_lighting_importance, we focus on lighting at an intersection point. We iterate through each light in the scene, sampling directly from these light sources. For each light sample, we evaluate whether the path is unobstructed (i.e., L.illum() > 0). We construct a new shadow ray shadowRay(hit_p, wi, distToLight - EPS_F). If this shadow ray does not intersect with any objects, we accumulate the term f * L * cos_theta(wi_obj) / pdf to L_out.</p>
@@ -182,7 +181,7 @@
 	<p>On the other hand, importance sampling in lighting proves to be more efficient in noise reduction. The underlying principle of this technique is that it strategically samples from the light sources, concentrating the computation on the areas most likely to affect the visual outcome, thus improving the overall image quality and clarity.</p>
 
 
-        <h2 id="task4">Task 4</h2>
+        <h2 id="task4">Part 4</h2>
         <div class="question"><p>Walk through your implementation of the indirect lighting function.</p></div>
         <ul>
 		<li>In at_least_one_bounce_radiance(), we initially determine if ray. depth is at base cases. For instance, if it’s at r=0, we return Vector3D(0, 0, 0); ; If it’s at r = 1, we would return one_bounce_radiance(r, insect);</li>
@@ -211,81 +210,69 @@
 	    <img src="images/task4-9.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-10.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
-	<p>From Top to Bottom: max_ray_depth set to 0, 1, 2, 3, 4, and 5</p>
+	<p>From Top to Bottom: max_ray_depth set to 0, 1, 2, 3, 4, and 5.</p>
+	<p>Explain what you see for the 2nd and 3rd bounce of light:</p>
+	<ul>
+		<li>The 2nd bounce of light reveals additional colour infusion from the red and blue walls, enhancing the vibrancy within the scene. The shadow on the ground shows a softer gradient. Moreover, there's a greater weight of light coming from the floor (which should be the result of direct lighting from the first bounce + zero_bounce illumination)</li>
+		<li>The 3rd bounce of light is more complex and equal in weights of light. It’s more complex, with a mix of light from different sources and angles.</li>
+	</ul>
+	<p>How it contributes to the quality of the rendered image compared to rasterization:</p>
+	<ul>
+		<li>Ray tracing more accurately simulates light interactions, capturing both direct and multiple levels of indirect light, whereas rasterization generally handles only direct light. Thus it has a higher quality.</li>
+		<li>However, the quality is at the cost of more time and computations (if we choose a higher resolution), compared to fast rasterizations.</li>
+	</ul>
 	<div class="question"><p>For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, 4, and 5(the -m flag). Use 1024 samples per pixel.</p>
-	
+	<div class="image-comparison-container">
+            <img src="images/task4-11.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-12.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-13.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-14.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-15.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-16.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>From Top to Bottom: max_ray_depth set to 0, 1, 2, 3, 4, and 5.</p>
+	<p>With higher max_depth, from m=0 to m=1, there’s a strong jump from no light to direct lighting. Then from m =1 to m = 2, there’s more bottom indirect lighting and color. As max_depth becomes higher, there’s more indirect lighting and the changes become more intricate.</p>
 	<div class="question"><p>For CBbunny.dae, output the Russian Roulette rendering with max_ray_depth set to 0, 1, 2, 3, 4, and 100(the -m flag). Use 1024 samples per pixel.</p>
+	<div class="image-comparison-container">
+            <img src="images/task4-17.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-18.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-19.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-20.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-21.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-22.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>From Top to Bottom: max_ray_depth set to 0, 1, 2, 3, 4, and 100.</p>
 	<div class="question"><p>Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.</p>
-	
-        
+	<div class="image-comparison-container">
+            <img src="images/task4-23.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-24.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-25.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-26.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-27.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-28.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-29.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>From Top to Bottom: sample-per-pixel rate set to 1, 2, 4, 8, 16, 64, and 1024.</p>
+        <p>With increasing sampling rate, the picture becomes smoother and more detailed, with fewer noises.</p>
 
-        <h2 id="task5">Task 5</h2>
-        <div class="question"><p>Briefly explain how you implemented the edge split operation and describe any interesting implementation / debugging tricks you have used.</p>
+        <h2 id="task5">Part 5</h2>
+        <div class="question"><p>Explain adaptive sampling. Walk through your implementation of the adaptive sampling.</p></div>
+	<p>Here's a step-by-step walkthrough of our algorithm:</p>
 	<ul>
-            <li><strong>Implementation:</strong> We iterated through all edges, vertex, and half edges and explicitly state what their new next()/vertex()/face() is. </li>
-	    <li><strong>Debugging Tricks:</strong> To ensure accuracy during implementation, we created detailed diagrams representing the states of the mesh before and after the flip operation, focusing on e0 as the central edge. Each diagram included comprehensive labelling of edges, half edges, and vertices. In the code, we then explicitly set the next, twin, vertex, and other relevant properties for every half edge/edge/vertex/face involved in the flip. This approach, although resulting in some redundancy, served as a verification method, allowing me to cross-reference the code with the diagrams and confirm that every half edge was correctly updated.</li>
+        	<li>1. Sample Accumulation: For each pixel, instead of immediately reaching a pre-determined sample count, we start tracing rays and accumulating color estimates. After processing a certain number of samples (determined by `samplesPerBatch`), we pause to evaluate if more samples are needed.</li>
+		<li>2. Calculating Statistics: As we accumulate samples, we maintain two key statistics: the sum of the sample illuminances (`s1`) and the sum of the squares of the sample illuminances (`s2`). These allow me to compute the mean illuminance (`μ`) and variance (`σ^2`) of the samples for each pixel without needing to store individual sample values.</li>
+		<li>3. Convergence Check: After each batch of samples, we assess convergence by calculating a confidence interval width (`I`) based on the mean and standard deviation of the samples collected so far. This interval gives me a statistical measure of how much uncertainty remains in the pixel's color estimate. If the interval width is within a specified tolerance (`maxTolerance`) of the mean illuminance, we consider the pixel to have converged.</li>
+		<li>4. Adapting the Sample Count: If a pixel hasn't converged according to the check above, we continue sampling in subsequent batches until it does or until we reach the maximum number of samples allowed (`ns_aa`). The check is performed every `samplesPerBatch` samples to avoid excessive computation.</li>
+		<li>5. Finalizing the Pixel Color: Once a pixel has either converged or reached the maximum sample count, we finalize its color based on the accumulated samples. We also record the actual number of samples used in `sampleCountBuffer`, which can be visualized to understand where the algorithm allocated more samples.</li>
 	</ul>
+	<div class="question"><p>Pick two scenes and render them with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth.</p>
 	<div class="image-comparison-container">
-            <img src="images/new5-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+            <img src="images/task5-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task5-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task5-5.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task5-6.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
-	<div class="question"><p>Show screenshots of a mesh before and after some edge splits.</p>
-	<div class="image-comparison-container">
-            <img src="images/task5-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/task5-3.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-        </div>
-	<p>Top: Before changes; Bottom: after some splits.</p>
-	<div class="question"><p>Show screenshots of a mesh before and after a combination of both edge splits and edge flips.</p>
-	<div class="image-comparison-container">
-            <img src="images/task5-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/new5-4.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-        </div>
-	<p>Top: Before changes; Bottom: flip then split edges.</p>
-		
-
-        <h2 id="task6">Task 6</h2>
-        <div class="question"><p>Briefly explain how you implemented the loop subdivision and describe any interesting implementation / debugging tricks you have used.</p>
-	<ul>
-            <li><strong>Implementation:</strong>We followed the instructions outlined on the webpage: We iterate through each vertex, calculating its new position using the formula (1-nu)(v->position) + u*sum_of_neighbors. Additionally, we set vNew->isNew to false. Next, we proceed to iterate through the edges to calculate the new midpoint, while simultaneously creating a vector to accumulate all these oldEdges. We then move through all the old edges, flipping them if !e->isNew evaluates to true. Following this, we flip any new edge that connects an old vertex with a new one. Finally, we update the final Vertex::position with the new vertex positions.</li>
-            <li><strong>Interesting Tricks:</strong> We also test the functionality step by step. Initially, we assess the split edges' functionality by commenting out sections 4 & 5 and continue debugging. This process is repeated until clicking “L” successfully demonstrates an edge splitting, without any structural changes.</li>
-	</ul>
-	<div class="image-comparison-container">
-	    <img src="images/task6-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-        </div>
-
-	<div class="question"><p>Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges?</p>
-	<div class="image-comparison-container">
-	    <img src="images/teapot6-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/teapot6-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/teapot6-3.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-        </div>
-	<p>Above is the teapot after loop subdivisions.</p>
-	<p>  </p>
-	<div class="image-comparison-container">
-	    <img src="images/task6-6.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/task6-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/task6-3.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/task6-4.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/task6-5.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-        </div>
-	<p>Above is the cube after loop subdivisions. We could see that sharp corners become smoother after subdivision. </p>
-
-	<p>However, if we pre-split some edges on places where we want to keep the sharpness, the smoothing effect will be reduced as follows:</p>
-	<div class="image-comparison-container">
-	    <img src="images/task6-9.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/task6-10.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/task6-11.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-        </div>
-	<p>  </p>
-	<div class="question"><p>Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects.</p>
-	<ul>
-            <li><strong>Pre-process:</strong>Originally, the mesh becomes asymmetrical due to each face having a unique arrangement of edges, either from left to right or from right to left. Consequently, certain corners accumulate more incoming edges. With additional subdivisions, some corners become increasingly divided.</li>
-            <li><strong>Solution:</strong> To address this, I ensured every face is split into an X shape by dividing all edges on each face. This way, every face begins with an identical pattern of edges, leading to a naturally symmetrical outcome.</ul>
-	<div class="image-comparison-container">
-	    <img src="images/task6-12.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/task6-13.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/task6-14.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-	    <img src="images/task6-15.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
-        </div>
+	<p>Top to Bottom: /dae/sky/CBbunny.dae noise-free result, /dae/sky/CBbunny.dae sample rate image, /dae/sky/CBspheres_lambertian.dae noise-free result, /dae/sky/CBspheres_lambertian.dae sample rate image.</p>
 		
     </div>
 </div>

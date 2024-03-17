@@ -94,8 +94,9 @@
         <p>Link to all the images on this webpage: https://github.com/cal-cs184-student/hw-webpages-sp24-Alina6618/tree/master/hw3/images</p>
         
         <h2>Project Overview</h2>
-        <p>In this CS184 assignment, we explored geometric modeling, starting with Bezier curves and surfaces using the de Casteljau algorithm, moving on to manipulate triangle meshes with the half-edge data structure, and finally implemented the Loop subdivision for mesh upsampling. Through these tasks, we gained a deep understanding of how shapes and surfaces are constructed and refined in computer graphics. The assignment was both challenging and enlightening, offering hands-on experience with complex geometric transformations and the efficient manipulation of meshes. Implementing the Loop subdivision, in particular, was a highlight, allowing us to see firsthand how coarse meshes could be transformed into smoother, more detailed versions.</p>
-        <p> </p>
+        <p>Through this homework, we embarked on a journey to develop a sophisticated path tracer capable of producing photorealistic images. We began by optimizing the rendering process with a Bounding Volume Hierarchy (BVH), significantly improving efficiency in handling complex scenes by streamlining ray-object intersection tests. Progressing further, we tackled the simulation of direct illumination, crafting lighting models that accurately depicted the influence of light emanating directly from sources. Our exploration deepened as we introduced global illumination to our repertoire, enabling us to capture the intricate dance of light as it bounces across multiple surfaces, thereby injecting our scenes with lifelike lighting effects, such as color bleeding and soft shadows. Utilizing Monte Carlo methods, we adeptly handled diffuse reflection sampling and implemented strategies like Russian Roulette for unbiased path termination, striking a delicate balance between rendering performance and image quality. Through these endeavors, we gained a profound understanding of key concepts in photorealistic rendering, including spatial data structures, material behavior under light, and complex light transport models. By the conclusion of the homework, we successfully rendered complex 3D scenes with detailed lighting and shadows, showcasing our advanced skills in creating visually stunning and realistic images.</p>
+	<p> 
+	</p>
 	    
         <h2 id="task1">Part 1</h2>
         <div class="question"><p>Walk through the ray generation and primitive intersection parts of the rendering pipeline.</p></div>
@@ -172,10 +173,22 @@
 	<div class="question"><p>Show some images rendered with both implementations of the direct lighting function.</p></div>
 	<div class="image-comparison-container">
             <img src="images/task3-1.png" alt="Cubeman Shrugging" class="responsive-image">
-	    <img src="images/task3-2.png" alt="Cubeman Shrugging" class="responsive-image">
+	    <img src="images/task3-3.png" alt="Cubeman Shrugging" class="responsive-image">
         </div>
-        <p>Left: without vertex normals; Right: with vertex normals.</p>
+	<p>Top: Uniform Sampled; Bottom: Light-Importance Sampled.</p>
+	<div class="image-comparison-container">
+            <img src="images/task3-2.png" alt="Cubeman Shrugging" class="responsive-image">
+	    <img src="images/task3-4.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Top: Uniform Sampled; Bottom: Light-Importance Sampled.</p>
 	<div class="question"><p>Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.</p></div>
+	<div class="image-comparison-container">
+            <img src="images/task3-5.png" alt="Cubeman Shrugging" class="responsive-image">
+	    <img src="images/task3-6.png" alt="Cubeman Shrugging" class="responsive-image">
+	    <img src="images/task3-7.png" alt="Cubeman Shrugging" class="responsive-image">
+	    <img src="images/task3-8.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Top to Bottom, Left to Right: rendered with 1, 4, 16, and 64 light rays.</p>
 	<div class="question"><p>Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.</p></div>
 	<p>In uniform hemisphere sampling, we compute the average radiance by considering the contributions of all sample points, only if they intersect. This approach can lead to increased noise in the resulting images, as observed in the pictures above. The reason for this noise is the potential construction of rays that scatter to random, less significant locations, rather than focusing on the primary light interactions. </p>
 	<p>On the other hand, importance sampling in lighting proves to be more efficient in noise reduction. The underlying principle of this technique is that it strategically samples from the light sources, concentrating the computation on the areas most likely to affect the visual outcome, thus improving the overall image quality and clarity.</p>
@@ -188,20 +201,26 @@
 		<li>If we want to accumulate the bounces, we then use Russian roulette for path termination to decide on tracing further bounces, based on a coin-flip probability. If continuation is chosen, we sample a new direction (w_in) using the surface's BSDF and construct a new ray accordingly. This function is then recursively called with the new ray. The contribution from this call to L_out is adjusted by the formula sample * abs(cos_theta(w_in)) / pdf/prob.</li>
 		<li>If we don’t want to accumulate the bounces, we’ll just compute at_least_one_bounce_radiance(new_ray, new_ins) * sample * cos_theta(w_in) / pdf and return this as L_out</li>
 	</ul>
-	<div class="question"><p>Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.</p>
+	<div class="question"><p>Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.</p></div>
 	<div class="image-comparison-container">
             <img src="images/task4-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
-	<p>Top: ./pathtracer -t 8 -s 1024 -l 32 -m 6 -f bunny_1024_32.png -r 480 360 ../dae/sky/CBbunny.dae</p>
-	<p>Bottom: ./pathtracer -t 8 -s 1024 -l 16 -m 4 -r 480 360 -f 1032-spheres.png ../dae/sky/CBspheres_lambertian.dae</p>
-	<div class="question"><p>Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)</p>
+	<p>Left ./pathtracer -t 8 -s 1024 -l 32 -m 6 -f bunny_1024_32.png -r 480 360 ../dae/sky/CBbunny.dae</p>
+	<p>Right: ./pathtracer -t 8 -s 1024 -l 16 -m 4 -r 480 360 -f 1032-spheres.png ../dae/sky/CBspheres_lambertian.dae</p>
+	<p>    
+	</p>
+	<div class="question"><p>Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)</p></div>
 	<div class="image-comparison-container">
             <img src="images/task4-3.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-4.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
-	<p>Top: Rendered with ONLY DIRECT illumination; Bottom: Rendered with ONLY INDIRECT illumination.</p>
-	<div class="question"><p>For CBbunny.dae, render the mth bounce of light with max_ray_depth set to 0, 1, 2, 3, 4, and 5 (the -m flag), and isAccumBounces=false. Explain in your writeup what you see for the 2nd and 3rd bounce of light, and how it contributes to the quality of the rendered image compared to rasterization. Use 1024 samples per pixel.</p>
+	<p>Left: Rendered with ONLY DIRECT illumination.</p>
+	<p>Right: Rendered with ONLY INDIRECT illumination.</p>
+	<p>
+		
+	</p>
+	<div class="question"><p>For CBbunny.dae, render the mth bounce of light with max_ray_depth set to 0, 1, 2, 3, 4, and 5 (the -m flag), and isAccumBounces=false. Explain in your writeup what you see for the 2nd and 3rd bounce of light, and how it contributes to the quality of the rendered image compared to rasterization. Use 1024 samples per pixel.</p></div>
 	<div class="image-comparison-container">
             <img src="images/task4-5.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-6.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
@@ -210,7 +229,9 @@
 	    <img src="images/task4-9.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-10.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
-	<p>From Top to Bottom: max_ray_depth set to 0, 1, 2, 3, 4, and 5.</p>
+	<p>From Top to Bottom, Left to Right: max_ray_depth set to 0, 1, 2, 3, 4, and 5.</p>
+	<p>
+	</p>
 	<p>Explain what you see for the 2nd and 3rd bounce of light:</p>
 	<ul>
 		<li>The 2nd bounce of light reveals additional colour infusion from the red and blue walls, enhancing the vibrancy within the scene. The shadow on the ground shows a softer gradient. Moreover, there's a greater weight of light coming from the floor (which should be the result of direct lighting from the first bounce + zero_bounce illumination)</li>
@@ -221,7 +242,7 @@
 		<li>Ray tracing more accurately simulates light interactions, capturing both direct and multiple levels of indirect light, whereas rasterization generally handles only direct light. Thus it has a higher quality.</li>
 		<li>However, the quality is at the cost of more time and computations (if we choose a higher resolution), compared to fast rasterizations.</li>
 	</ul>
-	<div class="question"><p>For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, 4, and 5(the -m flag). Use 1024 samples per pixel.</p>
+	<div class="question"><p>For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, 4, and 5(the -m flag). Use 1024 samples per pixel.</p></div>
 	<div class="image-comparison-container">
             <img src="images/task4-11.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-12.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
@@ -230,9 +251,9 @@
 	    <img src="images/task4-15.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-16.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
-	<p>From Top to Bottom: max_ray_depth set to 0, 1, 2, 3, 4, and 5.</p>
+	<p>From Top to Bottom, Left to Right: max_ray_depth set to 0, 1, 2, 3, 4, and 5.</p>
 	<p>With higher max_depth, from m=0 to m=1, there’s a strong jump from no light to direct lighting. Then from m =1 to m = 2, there’s more bottom indirect lighting and color. As max_depth becomes higher, there’s more indirect lighting and the changes become more intricate.</p>
-	<div class="question"><p>For CBbunny.dae, output the Russian Roulette rendering with max_ray_depth set to 0, 1, 2, 3, 4, and 100(the -m flag). Use 1024 samples per pixel.</p>
+	<div class="question"><p>For CBbunny.dae, output the Russian Roulette rendering with max_ray_depth set to 0, 1, 2, 3, 4, and 100(the -m flag). Use 1024 samples per pixel.</p></div>
 	<div class="image-comparison-container">
             <img src="images/task4-17.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-18.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
@@ -241,8 +262,8 @@
 	    <img src="images/task4-21.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-22.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
-	<p>From Top to Bottom: max_ray_depth set to 0, 1, 2, 3, 4, and 100.</p>
-	<div class="question"><p>Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.</p>
+	<p>From Top to Bottom, Left to Right: max_ray_depth set to 0, 1, 2, 3, 4, and 100.</p>
+	<div class="question"><p>Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.</p></div>
 	<div class="image-comparison-container">
             <img src="images/task4-23.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-24.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
@@ -252,7 +273,7 @@
 	    <img src="images/task4-28.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task4-29.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
         </div>
-	<p>From Top to Bottom: sample-per-pixel rate set to 1, 2, 4, 8, 16, 64, and 1024.</p>
+	<p>From Top to Bottom, Left to Right: sample-per-pixel rate set to 1, 2, 4, 8, 16, 64, and 1024.</p>
         <p>With increasing sampling rate, the picture becomes smoother and more detailed, with fewer noises.</p>
 
         <h2 id="task5">Part 5</h2>
@@ -265,7 +286,7 @@
 		<li>Adapting the Sample Count: If a pixel hasn't converged according to the check above, we continue sampling in subsequent batches until it does or until we reach the maximum number of samples allowed (`ns_aa`). The check is performed every `samplesPerBatch` samples to avoid excessive computation.</li>
 		<li>Finalizing the Pixel Color: Once a pixel has either converged or reached the maximum sample count, we finalize its color based on the accumulated samples. We also record the actual number of samples used in `sampleCountBuffer`, which can be visualized to understand where the algorithm allocated more samples.</li>
 	</ul>
-	<div class="question"><p>Pick two scenes and render them with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth.</p>
+	<div class="question"><p>Pick two scenes and render them with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth.</p></div>
 	<div class="image-comparison-container">
             <img src="images/task5-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
 	    <img src="images/task5-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">

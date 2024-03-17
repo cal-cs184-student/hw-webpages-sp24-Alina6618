@@ -1,7 +1,298 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Homework 3 index.html here
-	</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Project Title</title>
+    <style>
+        body {
+            font-family: 'Roboto', 'Open Sans', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/skyscraper.png');
+        }
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .container {
+            padding: 40px;
+        }
+        .content {
+            background-color: #ffffff;
+            background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/diagonal-striped-brick.png'); /* Adding texture to content background */
+            padding: 40px;
+            margin-top: 40px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            margin-top: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .question::before {
+        content: "• ";
+        font-weight: bold;
+        }
+        .question p {
+        display: inline;
+        font-weight: bold;
+        }
+        .image-container {
+            display: flex; /* Use flexbox */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh; /* Make the container take the full height of the viewport */
+            width: 100%; /* Ensure the container is full width */
+        }
+        .responsive-image {
+            max-width: 100%; /* Make the image responsive */
+            max-height: 80vh; /* Limit the image's height to ensure it fits within the viewport */
+            height: auto; /* Maintain aspect ratio */
+        }
+</style>
+
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="#home">Home</a>
+    <a href="#task1">Task 1</a>
+    <a href="#task2">Task 2</a>
+    <a href="#task3">Task 3</a>
+    <a href="#task4">Task 4</a>
+    <a href="#task5">Task 5</a>
+    <a href="#task6">Task 6</a>
+</div>
+
+<div class="container">
+    <div class="content">
+        <h1>Hi! Welcome to Our CS 184 Homework 3 :)</h1>
+        <p>Link to this webpage: https://cal-cs184-student.github.io/hw-webpages-sp24-Alina6618/hw3/</p>
+        <p>Link to all the images on this webpage: https://github.com/cal-cs184-student/hw-webpages-sp24-Alina6618/tree/master/hw3/images</p>
+        
+        <h2>Project Overview</h2>
+        <p>In this CS184 assignment, we explored geometric modeling, starting with Bezier curves and surfaces using the de Casteljau algorithm, moving on to manipulate triangle meshes with the half-edge data structure, and finally implemented the Loop subdivision for mesh upsampling. Through these tasks, we gained a deep understanding of how shapes and surfaces are constructed and refined in computer graphics. The assignment was both challenging and enlightening, offering hands-on experience with complex geometric transformations and the efficient manipulation of meshes. Implementing the Loop subdivision, in particular, was a highlight, allowing us to see firsthand how coarse meshes could be transformed into smoother, more detailed versions.</p>
+        <p> </p>
+	    
+        <h2 id="task1">Task 1</h2>
+        <div class="question"><p>Walk through the ray generation and primitive intersection parts of the rendering pipeline.</p></div>
+	<p>Ray generation happens in two key parts of our code: the `Camera::generate_ray` method and the `PathTracer::raytrace_pixel` method.</p>
+        <ul>
+            <li>1. Camera::generate_ray(double x, double y): This method takes normalized image coordinates `(x, y)` as input, which range from `[0, 1]` across the width and height of the image, respectively. The method calculates the position of this pixel on a virtual camera sensor, which is located in the camera space with its center at `(0, 0, -1)` and its bottom left corner at `(-tan(hFov / 2), -tan(vFov / 2), -1)`. The ray is initially generated in this camera space, starting from the camera's origin `(0, 0, 0)` and passing through the calculated position on the sensor. The ray's direction is normalized, and the ray is transformed into world space using the camera's position and orientation. The transformation involves adjusting the ray's origin to the camera's position in world space and rotating its direction vector by the camera-to-world rotation matrix `c2w`.</li>
+	    <li>2. PathTracer::raytrace_pixel(size_t x, size_t y): For each pixel, this method generates multiple rays (based on `ns_aa`, the number of samples per pixel) to estimate the pixel's color by averaging the radiance estimates for these samples. For each sample, it calculates normalized image coordinates by adding a small random offset to the pixel's coordinates (for anti-aliasing purposes) and then calls `Camera::generate_ray` to generate a ray for that sample. It then estimates the radiance along that ray using `est_radiance_global_illumination`.</li>
+	</ul>
+	<p>The intersection logic for triangles and spheres is encapsulated in their respective `intersect` methods. Both methods aim to detect if and where a ray intersects the primitive, and update the intersection record with details about the intersection point.</p>
+	<ul>
+		<li>1. Triangle::intersect(const Ray &r, Intersection *isect): This method calculates the intersection between a ray and a triangle using barycentric coordinates. It first checks if the ray intersects the plane in which the triangle lies, and then determines whether the intersection point is within the triangle's boundaries by checking the computed barycentric coordinates. If there is an intersection, it updates `r.max_t` to the distance to the intersection point, and fills the `isect` structure with the intersection details, including the interpolated normal at the intersection point (computed using the barycentric coordinates and the vertex normals) and a pointer to the triangle's material (BSDF).</li>
+		<li>2. Sphere::intersect(const Ray &r, Intersection *isect): The intersection with a sphere is computed using the quadratic formula derived from the ray-sphere intersection equation. If the discriminant of this equation is positive, the ray intersects the sphere, and the smaller of the two solutions is the nearest intersection point. The method updates `r.max_t` with this distance and fills in the `isect` structure, including the normal at the intersection point (computed as the normalized vector from the sphere's center to the intersection point) and a pointer to the sphere's material.</li>
+	</ul>
+	    
+	<div class="question"><p>Explain the triangle intersection algorithm you implemented in your own words.</p></div>
+	<p>The triangle intersection algorithm implemented in our code uses a method based on barycentric coordinates and the Möller-Trumbore intersection algorithm. This method efficiently checks if a ray intersects a triangle in 3D space and finds the intersection point if it exists. Here's a breakdown of the algorithm:</p>
+	<ul>
+		<li>1. Calculate Vectors: Start by calculating two vectors, `edge1` and `edge2`, which represent two sides of the triangle. These are found by subtracting the coordinates of the first vertex from the second and third vertices, respectively.</li>
+		<li>2. Determine the P Vector: Calculate a vector perpendicular to the direction of the ray (`r.d`) and one of the triangle's edge vectors (`edge2`). This vector is crucial for determining if the ray intersects the triangle plane and for further calculations of barycentric coordinates.</li>
+		<li>3. Calculate Determinant: Use the dot product of `edge1` and the previously calculated perpendicular vector to find the determinant. The determinant helps check if the ray is parallel to the triangle's plane. If the determinant is close to zero, the ray and the triangle do not intersect because they are parallel.</li>
+		<li>4. Calculate Inverse Determinant: If the determinant is not close to zero, calculate its inverse. This inverse is used to scale several components of the algorithm, optimizing the computation of barycentric coordinates.</li>
+		<li>5. Compute Barycentric Coordinate U: Calculate a vector from the first vertex of the triangle to the ray's origin. Use this vector, along with the perpendicular vector from step 2 and the inverse determinant, to compute the first barycentric coordinate, `u`. If `u` is outside the range of [0,1], the ray does not intersect the triangle.</li>
+		<li>6. Compute Barycentric Coordinate V: Similar to the previous step, but now compute the second barycentric coordinate, `v`, using the ray's direction, the vector from step 5, and `edge1`. This helps determine the ray's intersection point within the triangle. If `v` is negative or if the sum of `u` and `v` is greater than 1, the ray does not intersect the triangle.</li>
+		<li>7. Calculate t for the Intersection Point: If steps 5 and 6 indicate an intersection, calculate the distance `t` from the ray's origin to the intersection point on the triangle. This uses the dot product of `edge2` and the vector from step 5, scaled by the inverse determinant. This `t` value indicates where along the ray's path the intersection occurs.</li>
+		<li>8. Update Intersection Record: If the calculated `t` is within the valid range of the ray (between `min_t` and `max_t`), the algorithm confirms the intersection. It updates the ray's `max_t` to the distance to the intersection point, indicating the closest intersection encountered so far. The intersection record (`isect`) is updated with the intersection point's details, including the calculated `t`, the interpolated normal at the intersection point (using barycentric coordinates), and references to the triangle's material properties.</li>
+	</ul>
+	
+	<div class="question"><p>Show images with normal shading for a few small .dae files.</p></div>
+	<div class="image-comparison-container">
+            	<img src="images/task1-1.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+	    	<img src="images/task1-2.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+        </div>
+	<p>Top: Empty; Bottom: Spheres.</p>
+
+        
+        <h2 id="task2">Task 2</h2>
+        <div class="question"><p>Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.</p></div>
+	<p>Construction Algorithm:</p>
+	<ul>
+            <li>-If the number of primitives between start and end is less than or equal to max_leaf_size, the node is considered a leaf node. In this case, we construct a new bounding box by iterating over all primitives within the range and expanding it to include each primitive's bounding box. Then, we create a new node with the start and end iterators denoting the range of primitives enclosed by this leaf node.</li>
+	    <li>-If there are more primitives than max_leaf_size, we need to split them. We first calculate a bounding box for the centroids of all primitives to determine the best splitting axis by finding where the centroids' spread is widest. We then partition the primitives around the median of this axis into 'left' and 'right' groups.</li>
+	    <li>-If partitioning fails to effectively split the primitives, we divide them into two equal halves.</li>
+	    <li>-Then we recursively call construct_bvh(start, midpoint, max_leaf_size) as node->l and construct_bvh(midpoint, end, max_leaf_size) as node->r.</li>
+	</ul>
+	<p>Explain Heuristic:</p>
+	<p>Firstly, we choose the axis with the greatest spread of the centroids of the primitives' bounding boxes. Then we choose the middle point of that axis.</p>
+        <div class="question"><p>Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.</p></div>
+        <div class="image-comparison-container">
+            <img src="images/task2-1.png" alt="Sample Rate 16" class="responsive-image">
+	    <img src="images/task2-2.png" alt="Sample Rate 16" class="responsive-image">
+	    <img src="images/task2-3.png" alt="Sample Rate 16" class="responsive-image">
+        </div>
+	<p>Top to Bottom: Maxplanck, Goddess, Beast.</p>
+	<div class="question"><p>Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis.</p></div>
+	<p>For the cow model, without BVH, the rendering time is 50s; with BVH, it reduces to 0.18s. For the Peter model, without BVH, the rendering time stands at 563s; with BVH, it drops to 0.3215s. For the teapot model, without BVH, it requires 14s to render; with BVH, this is cut down to 0.1568s. These results demonstrate that without BVH, rendering time increases significantly with the complexity of the structures. However, employing BVH markedly reduces rendering times across all models, showcasing minimal differences despite the complexity of the scenes.</p>
+	<div class="image-comparison-container">
+		<img src="images/task2-4.png" alt="Sample Rate 16" class="responsive-image">
+		<img src="images/task2-5.png" alt="Sample Rate 16" class="responsive-image">
+		<img src="images/task2-6.png" alt="Sample Rate 16" class="responsive-image">
+	</div>
+	<p>Top to Bomttom: Cow, Peter, Teapot with BVH.</p>
+	<div class="image-comparison-container">
+		<img src="images/task2-7.png" alt="Sample Rate 16" class="responsive-image">
+		<img src="images/task2-8.png" alt="Sample Rate 16" class="responsive-image">
+		<img src="images/task2-9.png" alt="Sample Rate 16" class="responsive-image">
+	</div>
+	<p>Top to Bomttom: Cow, Peter, Teapot without BVH.</p>
+
+	    
+        <h2 id="task3">Task 3</h2>
+        <div class="question"><p>Walk through both implementations of the direct lighting function.</p></div>
+	<p>In estimate_direct_lighting_hemisphere, we iterate through each sample point, applying a transformation to it. We then generate a new shadow ray shadowRay(hit_p + wi_world * EPS_D, wi_world, INF_D). If the shadow ray does not intersect with any geometry, we find the emission and scale it by isect.bsdf->f(w_out, wi_local) * emission * cosTheta * 2 * PI. Finally, we average the scaled emissions from all rays.</p>
+        <p>In estimate_direct_lighting_importance, we focus on lighting at an intersection point. We iterate through each light in the scene, sampling directly from these light sources. For each light sample, we evaluate whether the path is unobstructed (i.e., L.illum() > 0). We construct a new shadow ray shadowRay(hit_p, wi, distToLight - EPS_F). If this shadow ray does not intersect with any objects, we accumulate the term f * L * cos_theta(wi_obj) / pdf to L_out.</p>
+	<div class="question"><p>Show some images rendered with both implementations of the direct lighting function.</p></div>
+	<div class="image-comparison-container">
+            <img src="images/task3-1.png" alt="Cubeman Shrugging" class="responsive-image">
+	    <img src="images/task3-2.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+        <p>Left: without vertex normals; Right: with vertex normals.</p>
+	<div class="question"><p>Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.</p></div>
+	<div class="question"><p>Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.</p></div>
+	<p>In uniform hemisphere sampling, we compute the average radiance by considering the contributions of all sample points, only if they intersect. This approach can lead to increased noise in the resulting images, as observed in the pictures above. The reason for this noise is the potential construction of rays that scatter to random, less significant locations, rather than focusing on the primary light interactions. </p>
+	<p>On the other hand, importance sampling in lighting proves to be more efficient in noise reduction. The underlying principle of this technique is that it strategically samples from the light sources, concentrating the computation on the areas most likely to affect the visual outcome, thus improving the overall image quality and clarity.</p>
+
+
+        <h2 id="task4">Task 4</h2>
+        <div class="question"><p>Walk through your implementation of the indirect lighting function.</p></div>
+        <ul>
+		<li>In at_least_one_bounce_radiance(), we initially determine if ray. depth is at base cases. For instance, if it’s at r=0, we return Vector3D(0, 0, 0); ; If it’s at r = 1, we would return one_bounce_radiance(r, insect);</li>
+		<li>If we want to accumulate the bounces, we then use Russian roulette for path termination to decide on tracing further bounces, based on a coin-flip probability. If continuation is chosen, we sample a new direction (w_in) using the surface's BSDF and construct a new ray accordingly. This function is then recursively called with the new ray. The contribution from this call to L_out is adjusted by the formula sample * abs(cos_theta(w_in)) / pdf/prob.</li>
+		<li>If we don’t want to accumulate the bounces, we’ll just compute at_least_one_bounce_radiance(new_ray, new_ins) * sample * cos_theta(w_in) / pdf and return this as L_out</li>
+	</ul>
+	<div class="question"><p>Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.</p>
+	<div class="image-comparison-container">
+            <img src="images/task4-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>Top: ./pathtracer -t 8 -s 1024 -l 32 -m 6 -f bunny_1024_32.png -r 480 360 ../dae/sky/CBbunny.dae</p>
+	<p>Bottom: ./pathtracer -t 8 -s 1024 -l 16 -m 4 -r 480 360 -f 1032-spheres.png ../dae/sky/CBspheres_lambertian.dae</p>
+	<div class="question"><p>Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)</p>
+	<div class="image-comparison-container">
+            <img src="images/task4-3.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-4.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>Top: Rendered with ONLY DIRECT illumination; Bottom: Rendered with ONLY INDIRECT illumination.</p>
+	<div class="question"><p>For CBbunny.dae, render the mth bounce of light with max_ray_depth set to 0, 1, 2, 3, 4, and 5 (the -m flag), and isAccumBounces=false. Explain in your writeup what you see for the 2nd and 3rd bounce of light, and how it contributes to the quality of the rendered image compared to rasterization. Use 1024 samples per pixel.</p>
+	<div class="image-comparison-container">
+            <img src="images/task4-5.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-6.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-7.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-8.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-9.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task4-10.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>From Top to Bottom: max_ray_depth set to 0, 1, 2, 3, 4, and 5</p>
+	<div class="question"><p>For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, 4, and 5(the -m flag). Use 1024 samples per pixel.</p>
+	
+	<div class="question"><p>For CBbunny.dae, output the Russian Roulette rendering with max_ray_depth set to 0, 1, 2, 3, 4, and 100(the -m flag). Use 1024 samples per pixel.</p>
+	<div class="question"><p>Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.</p>
+	
+        
+
+        <h2 id="task5">Task 5</h2>
+        <div class="question"><p>Briefly explain how you implemented the edge split operation and describe any interesting implementation / debugging tricks you have used.</p>
+	<ul>
+            <li><strong>Implementation:</strong> We iterated through all edges, vertex, and half edges and explicitly state what their new next()/vertex()/face() is. </li>
+	    <li><strong>Debugging Tricks:</strong> To ensure accuracy during implementation, we created detailed diagrams representing the states of the mesh before and after the flip operation, focusing on e0 as the central edge. Each diagram included comprehensive labelling of edges, half edges, and vertices. In the code, we then explicitly set the next, twin, vertex, and other relevant properties for every half edge/edge/vertex/face involved in the flip. This approach, although resulting in some redundancy, served as a verification method, allowing me to cross-reference the code with the diagrams and confirm that every half edge was correctly updated.</li>
+	</ul>
+	<div class="image-comparison-container">
+            <img src="images/new5-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<div class="question"><p>Show screenshots of a mesh before and after some edge splits.</p>
+	<div class="image-comparison-container">
+            <img src="images/task5-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task5-3.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>Top: Before changes; Bottom: after some splits.</p>
+	<div class="question"><p>Show screenshots of a mesh before and after a combination of both edge splits and edge flips.</p>
+	<div class="image-comparison-container">
+            <img src="images/task5-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/new5-4.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>Top: Before changes; Bottom: flip then split edges.</p>
+		
+
+        <h2 id="task6">Task 6</h2>
+        <div class="question"><p>Briefly explain how you implemented the loop subdivision and describe any interesting implementation / debugging tricks you have used.</p>
+	<ul>
+            <li><strong>Implementation:</strong>We followed the instructions outlined on the webpage: We iterate through each vertex, calculating its new position using the formula (1-nu)(v->position) + u*sum_of_neighbors. Additionally, we set vNew->isNew to false. Next, we proceed to iterate through the edges to calculate the new midpoint, while simultaneously creating a vector to accumulate all these oldEdges. We then move through all the old edges, flipping them if !e->isNew evaluates to true. Following this, we flip any new edge that connects an old vertex with a new one. Finally, we update the final Vertex::position with the new vertex positions.</li>
+            <li><strong>Interesting Tricks:</strong> We also test the functionality step by step. Initially, we assess the split edges' functionality by commenting out sections 4 & 5 and continue debugging. This process is repeated until clicking “L” successfully demonstrates an edge splitting, without any structural changes.</li>
+	</ul>
+	<div class="image-comparison-container">
+	    <img src="images/task6-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+
+	<div class="question"><p>Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges?</p>
+	<div class="image-comparison-container">
+	    <img src="images/teapot6-1.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/teapot6-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/teapot6-3.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>Above is the teapot after loop subdivisions.</p>
+	<p>  </p>
+	<div class="image-comparison-container">
+	    <img src="images/task6-6.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-2.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-3.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-4.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-5.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>Above is the cube after loop subdivisions. We could see that sharp corners become smoother after subdivision. </p>
+
+	<p>However, if we pre-split some edges on places where we want to keep the sharpness, the smoothing effect will be reduced as follows:</p>
+	<div class="image-comparison-container">
+	    <img src="images/task6-9.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-10.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-11.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+	<p>  </p>
+	<div class="question"><p>Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects.</p>
+	<ul>
+            <li><strong>Pre-process:</strong>Originally, the mesh becomes asymmetrical due to each face having a unique arrangement of edges, either from left to right or from right to left. Consequently, certain corners accumulate more incoming edges. With additional subdivisions, some corners become increasingly divided.</li>
+            <li><strong>Solution:</strong> To address this, I ensured every face is split into an X shape by dividing all edges on each face. This way, every face begins with an identical pattern of edges, leading to a naturally symmetrical outcome.</ul>
+	<div class="image-comparison-container">
+	    <img src="images/task6-12.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-13.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-14.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+	    <img src="images/task6-15.png" alt="Barycentric Coordinates Illustration" class="responsive-image">
+        </div>
+		
+    </div>
+</div>
+
+<div class="footer">
+    <p>Alina Sheng & Xiaowen Liu</p>
+</div>
+
+</body>
 </html>

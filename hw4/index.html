@@ -1,7 +1,201 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Homework 4 index.html here
-	</body>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Project Title</title>
+    <style>
+        body {
+            font-family: 'Roboto', 'Open Sans', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/skyscraper.png');
+        }
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .container {
+            padding: 40px;
+        }
+        .content {
+            background-color: #ffffff;
+            background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/diagonal-striped-brick.png'); /* Adding texture to content background */
+            padding: 40px;
+            margin-top: 40px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            margin-top: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .question::before {
+        content: "• ";
+        font-weight: bold;
+        }
+        .question p {
+        display: inline;
+        font-weight: bold;
+        }
+        .image-container {
+            display: flex; /* Use flexbox */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh; /* Make the container take the full height of the viewport */
+            width: 100%; /* Ensure the container is full width */
+        }
+        .responsive-image {
+            max-width: 100%; /* Make the image responsive */
+            max-height: 80vh; /* Limit the image's height to ensure it fits within the viewport */
+            height: auto; /* Maintain aspect ratio */
+        }
+</style>
+
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="#home">Home</a>
+    <a href="#task1">Part 1</a>
+    <a href="#task2">Part 2</a>
+    <a href="#task3">Part 3</a>
+    <a href="#task4">Part 4</a>
+    <a href="#task5">Part 5</a>
+</div>
+
+<div class="container">
+    <div class="content">
+        <h1>Hi! Welcome to Our CS 184 Homework 4 :)</h1>
+        <p>Link to this webpage: https://cal-cs184-student.github.io/hw-webpages-sp24-Alina6618/hw4/</p>
+        <p>Link to all the images on this webpage: https://github.com/cal-cs184-student/hw-webpages-sp24-Alina6618/tree/master/hw4/images</p>
+        
+        <h2>Project Overview</h2>
+        <p>Through this homework, we embarked on a journey to develop a sophisticated path tracer capable of producing photorealistic images. We began by optimizing the rendering process with a Bounding Volume Hierarchy (BVH), significantly improving efficiency in handling complex scenes by streamlining ray-object intersection tests. Progressing further, we tackled the simulation of direct illumination, crafting lighting models that accurately depicted the influence of light emanating directly from sources. Our exploration deepened as we introduced global illumination to our repertoire, enabling us to capture the intricate dance of light as it bounces across multiple surfaces, thereby injecting our scenes with lifelike lighting effects, such as color bleeding and soft shadows. Utilizing Monte Carlo methods, we adeptly handled diffuse reflection sampling and implemented strategies like Russian Roulette for unbiased path termination, striking a delicate balance between rendering performance and image quality. Through these endeavors, we gained a profound understanding of key concepts in photorealistic rendering, including spatial data structures, material behavior under light, and complex light transport models. By the conclusion of the homework, we successfully rendered complex 3D scenes with detailed lighting and shadows, showcasing our advanced skills in creating visually stunning and realistic images.</p>
+	<p> 
+	</p>
+	    
+        <h2 id="task1">Part 1</h2>
+        <div class="question"><p>Take some screenshots of scene/pinned2.json from a viewing angle where you can clearly see the cloth wireframe to show the structure of your point masses and springs.</p></div>
+	<div class="image-comparison-container">
+            	<img src="images/task1-2.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+	    	<img src="images/task1-3.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+        </div>
+	    
+	<div class="question"><p>Show us what the wireframe looks like (1) without any shearing constraints, (2) with only shearing constraints, and (3) with all constraints.</p></div>
+	<ul>
+            <li>Without any shearing constraints:</li>
+	<div class="image-comparison-container">
+            	<img src="images/task1-4.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+        </div>
+	
+            <li>With only shearing constraints:</li>
+	<div class="image-comparison-container">
+            	<img src="images/task1-5.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+        </div>
+	    <li>With all constraints:</li>
+	<div class="image-comparison-container">
+            	<img src="images/task1-1.png" alt="Screenshot of basic/test4.svg" class="responsive-image">
+        </div>
+	</ul>
+        
+        <h2 id="task2">Part 2</h2>
+        <div class="question"><p>Describe the effects of changing the spring constant ks; how does the cloth behave from start to rest with a very low ks? A high ks?</p></div>
+	<ul>
+		<li>A lower ks makes the cloth more flexible and less resistant to stretching. When subjected to gravity, the cloth stretches more and exhibits a more fluid-like behavior. It takes longer to settle into a resting state because the springs are less forceful in pulling the cloth back to its original shape.</li>
+		<li>A higher ks results in a stiffer cloth. The springs are very resistant to stretching, causing the cloth to retain its shape more rigidly against external forces. The cloth settles into a resting state more quickly, as the strong springs rapidly counteract any displacements.</li>
+	</ul>
+	<div class="image-comparison-container">
+            <img src="images/task2-0.png" alt="Sample Rate 16" class="responsive-image">
+	    <img src="images/task2-7.png" alt="Sample Rate 16" class="responsive-image">
+        </div>
+	<p>With default parameters.</p>
+	<div class="image-comparison-container">
+            <img src="images/task2-1.png" alt="Sample Rate 16" class="responsive-image">
+	    <img src="images/task2-2.png" alt="Sample Rate 16" class="responsive-image">
+        </div>
+	<p>Low ks (1) and High ks (100000).</p>
+	<div class="question"><p>What about for density?</p></div>
+	<ul>
+		<li>A lower density makes the cloth lighter. It settles more slowly under gravity alone, as there is less force pulling it down. The cloth is also less stretched out as the gravitational force acting on it is smaller (it weighs less).</li>
+		<li>Increasing the density makes the cloth heavier so it is more stretched out. Heavier cloth also falls and settles faster due to the greater force of gravity acting on it.</li>
+	</ul>
+	<div class="image-comparison-container">
+		<img src="images/task2-3.png" alt="Sample Rate 16" class="responsive-image">
+		<img src="images/task2-4 new.png" alt="Sample Rate 16" class="responsive-image">
+	</div>
+	<p>Low density (1) and High density (100000). </p>
+	<div class="question"><p>What about for damping?</p></div>
+	<ul>
+		<li>Low damping means that there is less resistance to motion changes, leading to more prolonged oscillations once the cloth is released. The cloth continues to swing and ripple for a longer time before settling.</li>
+		<li>High damping adds resistance to motion changes, causing the cloth to quickly lose any introduced energy. As a result, movements are more muted, and once the cloth comes to its final place, it does not swing anymore. This makes the cloth appear heavy and less responsive to forces.</li>
+	</ul>
+	<div class="image-comparison-container">
+		<img src="images/task2-5.png" alt="Sample Rate 16" class="responsive-image">
+		<img src="images/task2-6.png" alt="Sample Rate 16" class="responsive-image">
+	</div>
+	<p>Low damping (0%) and High damping (1%). </p>
+
+	<div class="question"><p>Show us a screenshot of your shaded cloth from scene/pinned4.json in its final resting state!</p></div>
+	<div class="image-comparison-container">
+		<img src="images/task2-8.png" alt="Sample Rate 16" class="responsive-image">
+		<img src="images/task2-9.png" alt="Sample Rate 16" class="responsive-image">
+	</div>
+	    
+        <h2 id="task3">Part 3</h2>
+        <div class="question"><p>Show us screenshots of your shaded cloth from scene/sphere.json in its final resting state on the sphere using the default ks = 5000 as well as with ks = 500 and ks = 50000. Describe the differences in the results.</p></div>
+	<div class="image-comparison-container">
+            <img src="images/task3-1.png" alt="Cubeman Shrugging" class="responsive-image">
+	    <img src="images/task3-2.png" alt="Cubeman Shrugging" class="responsive-image">
+	    <img src="images/task3-3.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Top to Bottom: ks=5000; ks=500; ks=50000.</p>
+	<ul>
+		<li>Default ks (5000): The cloth drapes over the sphere in a balanced manner, showing a natural-looking interaction. The cloth conforms to the shape of the sphere without too much stretching or compression.</li>
+		<li>Low ks (500): A lower ks results in a more flexible and stretchy cloth. As it drapes over the sphere, There is more significant sagging and stretching of the fabric. The cloth also clings closer to the sphere due to its increased flexibility, resembling a thinner or more lightweight fabric.</li>
+		<li>High ks (50000): With a very high ks, the cloth becomes stiffer. This rigidity makes the cloth less prone to conform closely to the sphere's surface. The cloth hovers slightly above the sphere in some areas, as the strong springs resist deformation. This could resemble a stiffer or heavier fabric that doesn't easily bend or wrap around objects.</li>
+	</ul>
+
+	<div class="question"><p>Show us a screenshot of your shaded cloth lying peacefully at rest on the plane.</p></div>
+	<div class="image-comparison-container">
+            <img src="images/task3-4.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	    
+        <h2 id="task4">Part 4</h2>
+        
+        <h2 id="task5">Part 5</h2>
+
+		
+    </div>
+</div>
+
+<div class="footer">
+    <p>Alina Sheng & Xiaowen Liu</p>
+</div>
+
+</body>
 </html>

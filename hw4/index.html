@@ -218,8 +218,84 @@
 	<p>With a higher KS value (as depicted in the second group of graphs), the cloth falls with reduced self-collisions and a smoother surface. When folded on the plane, it becomes smoother and effortlessly expands into a flat sheet of cloth.</p>
 	
 	<h2 id="task5">Part 5</h2>
-
-		
+	<div class="question"><p>Explain in your own words what is a shader program and how vertex and fragment shaders work together to create lighting and material effects.</p></div>
+	<ul>
+		<li>A shader program operates on the GPU, executing in parallel. It enables customizable inputs and operations within the graphics pipeline, and then outputs a single 4-dimensional vector.</li>
+		<li>Vertex shaders enable one to alter vertices’ positions and normal vectors. The final position could be used in fragment shader. Fragment shader takes in these geometric properties and data prepared by vertex shaders and then computes the colour.</li>
+	</ul>
+	<div class="question"><p>Explain the Blinn-Phong shading model in your own words. Show a screenshot of your Blinn-Phong shader outputting only the ambient component, a screen shot only outputting the diffuse component, a screen shot only outputting the specular component, and one using the entire Blinn-Phong model.</p></div>
+	<p>The Blinn-Phong shading model is a modification of the Phong shading model. It calculates the pixel values between vertices and accounts for ambient reflection, diffuse reflection, and specular reflection. One could adjust parameters such as the intensity of light and the coefficient for reflection.</p>
+	<p>Only the ambient component:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-1.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Only the diffuse component:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-2.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Only the specular component:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-3.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Entire Blinn-Phong model:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-4.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<div class="question"><p>Show a screenshot of your texture mapping shader using your own custom texture by modifying the textures in /textures/.</p></div>
+	<div class="image-comparison-container">
+                <img src="images/task5-5.png" alt="Cubeman Shrugging" class="responsive-image">
+		<img src="images/task5-6.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<div class="question"><p>Show a screenshot of bump mapping on the cloth and on the sphere. Show a screenshot of displacement mapping on the sphere. Use the same texture for both renders. You can either provide your own texture or use one of the ones in the textures directory, BUT choose one that's not the default texture_2.png. Compare the two approaches and resulting renders in your own words. Compare how your the two shaders react to the sphere by changing the sphere mesh's coarseness by using -o 16 -a 16 and then -o 128 -a 128.</p></div>
+	<p>Bump Mapping on Cloth:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-8.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Bump Mapping on Sphere:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-7.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Displacement Mapping on Sphere:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-9.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Compare two approaches:</p>
+	<ul>
+		<li>Bump mapping alters only the normals of an object, creating an illusion of texture without modifying the object's actual geometry. In contrast, displacement mapping adjusts both the vertices' positions and their normals, resulting in a physical alteration of the object's shape to add real depth and detail.</li>
+		<li>Bump mapping generates the appearance of bumps and texture, and displacement mapping authentically changes the vertices' positions, producing real physical changes on the object's surface.</li>
+	</ul>
+	<p>Changing the sphere mesh's coarseness:</p>
+	<p>Using -o 16 -a 16:</p>
+	<p>Bump:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-10.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Displacement:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-12.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Using -o 128 -a 128:</p>
+	<p>Bump:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-11.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Displacement:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-13.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<ul>
+		<li>For bump mapping, changing coarseness barely results in any difference. The reason behind is that the number of vertices doesn’t influence the mapping.</li>
+		<li>For displacement mapping, increased coarseness significantly results in more curvature in sphere’s edges.  It comes from the fact that it results from changes in physical vertices.</li>
+	</ul>
+	<div class="question"><p>Show a screenshot of your mirror shader on the cloth and on the sphere.</p></div>
+	<p>Cloth:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-15.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
+	<p>Sphere:</p>
+	<div class="image-comparison-container">
+                <img src="images/task5-14.png" alt="Cubeman Shrugging" class="responsive-image">
+        </div>
     </div>
 </div>
 
